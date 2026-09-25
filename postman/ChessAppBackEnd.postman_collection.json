@@ -1,0 +1,123 @@
+{
+  "info": {
+    "_postman_id": "7ec09866-6a41-4689-ae35-bcc1d02a2316",
+    "name": "ChessAppBackEnd",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58308212"
+  },
+  "item": [
+    {
+      "name": "Get all players",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/players",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "players"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Search players by name",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/players?username=Beau",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "players"
+          ],
+          "query": [
+            {
+              "key": "username",
+              "value": "Beau"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Search players by id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Search with no matches",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/players?username=zzz",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "players"
+          ],
+          "query": [
+            {
+              "key": "username",
+              "value": "zzz"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Player not found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Status check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/chess/status",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "chess",
+            "status"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    }
+  ]
+}
