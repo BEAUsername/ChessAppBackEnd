@@ -1,10 +1,9 @@
-package org.chess.dto;
+package org.chess.controller.dtoResponse;
 
 import org.chess.model.Player;
 
 import java.time.LocalDate;
 
-// Record: Java generates the private final fields, constructor and getters
 public record PlayerResponse(
         int id,
         String username,
@@ -16,7 +15,7 @@ public record PlayerResponse(
         int winPercentage
 ) {
 
-    // Factory method: converts a Player (model) into a PlayerResponse (DTO)
+    // Factory method: to convert.
     public static PlayerResponse fromPlayer(Player player) {
         return new PlayerResponse(
                 player.getId(),

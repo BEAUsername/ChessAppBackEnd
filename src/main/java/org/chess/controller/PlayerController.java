@@ -1,6 +1,6 @@
 package org.chess.controller;
 
-import org.chess.dto.PlayerResponse;
+import org.chess.controller.dtoResponse.PlayerResponse;
 import org.chess.service.PlayerService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
