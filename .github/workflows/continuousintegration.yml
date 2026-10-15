@@ -33,7 +33,7 @@ jobs:
         with:
           name: CI-ChessApp-jar
           path: build/libs
-      - run: docker build -f Dockerfile.ci -t chessapp-backend .
+      - run: docker build -t chessapp-backend .
       - run: docker run -d -p 8080:8080 --name chessapp-backend chessapp-backend
       - name: Verify API response
         run: |
