@@ -1,10 +1,10 @@
 name: Continuous Integration
 
 on:
-    push:
-      branches: [ main, develop ]
-    pull_request:
-      branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
 
 jobs:
   build:
@@ -38,6 +38,20 @@ jobs:
     permissions:
       contents: read
       packages: write
+    services:
+      database:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: ci-test-db-root
+          MYSQL_DATABASE: chessapp
+          MYSQL_USER: ci-test-db
+          MYSQL_PASSWORD: ci-test-db-pass
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -pci-test-db-root"
+          --health-interval=5s
+          --health-retries=10
     steps:
       - uses: actions/checkout@v6
       - uses: actions/download-artifact@v4
@@ -45,7 +59,12 @@ jobs:
           name: CI-ChessApp-jar
           path: build/libs
       - run: docker build -t chessapp-backend-image .
-      - run: docker run -d -p 8080:8080 --name chessapp-backend chessapp-backend-image
+      - run: >
+          docker run -d --network host --name chessapp-backend
+          -e SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/chessapp
+          -e SPRING_DATASOURCE_USERNAME=ci-test-db
+          -e SPRING_DATASOURCE_PASSWORD=ci-test-db-pass
+          chessapp-backend-image
       - name: Verify API response
         run: curl --fail --retry 30 --retry-delay 2 --retry-all-errors http://localhost:8080/api/players
 
