@@ -2,6 +2,7 @@ package org.chess.service;
 
 import org.chess.controller.dtoResponse.PlayerResponse;
 import org.chess.exception.PlayerNotFoundException;
+import org.chess.interfaces.PlayerRepository;
 import org.chess.model.Player;
 import org.springframework.stereotype.Service;
 

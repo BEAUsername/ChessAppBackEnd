@@ -1,7 +1,7 @@
 package org.chess.repository;
 
 import org.chess.model.Player;
-import org.chess.service.PlayerRepository;
+import org.chess.interfaces.PlayerRepository;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-class DatabasePlayerRepository implements PlayerRepository {
+class JdbcPlayerRepository implements PlayerRepository {
 
     private static final String SELECT_PLAYERS =
             "SELECT id, username, creation_date, wins, losses, draws FROM players";
@@ -20,7 +20,7 @@ class DatabasePlayerRepository implements PlayerRepository {
     private final JdbcClient jdbcClient;
 
     // Constructor: Spring injects a JdbcClient here
-    DatabasePlayerRepository(JdbcClient jdbcClient) {
+    JdbcPlayerRepository(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
     }
 

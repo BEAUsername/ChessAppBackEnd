@@ -1,4 +1,4 @@
-package org.chess.service;
+package org.chess.interfaces;
 
 import org.chess.model.Player;
 
