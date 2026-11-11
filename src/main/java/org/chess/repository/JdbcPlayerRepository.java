@@ -48,6 +48,25 @@ class JdbcPlayerRepository implements PlayerRepository {
                 .list();
     }
 
+    @Override
+    public List<Player> findPage(String text, int limit, int offset) {
+        return jdbcClient.sql(SELECT_PLAYERS
+                        + " WHERE username LIKE :text ORDER BY wins DESC, id ASC LIMIT :limit OFFSET :offset")
+                .param("text", "%" + text + "%")
+                .param("limit", limit)
+                .param("offset", offset)
+                .query(this::toPlayer)
+                .list();
+    }
+
+    @Override
+    public int countByUsernameContaining(String text) {
+        return jdbcClient.sql("SELECT COUNT(*) FROM players WHERE username LIKE :text")
+                .param("text", "%" + text + "%")
+                .query(Integer.class)
+                .single();
+    }
+
     // Private helper: turns one database row into a Player
     private Player toPlayer(ResultSet resultSet, int rowNumber) throws SQLException {
         return new Player(

@@ -1,5 +1,6 @@
 package org.chess.service;
 
+import org.chess.controller.dtoResponse.PlayerPageResponse;
 import org.chess.controller.dtoResponse.PlayerResponse;
 import org.chess.exception.PlayerNotFoundException;
 import org.chess.interfaces.PlayerRepository;
@@ -13,6 +14,10 @@ import java.util.Optional;
 @Service
 public class PlayerService {
 
+    // Constants
+    private static final int PAGE_SIZE = 20;
+    private static final int MAX_PAGES = 5;
+
     // Fields
     private final PlayerRepository playerRepository;
 
@@ -22,9 +27,15 @@ public class PlayerService {
     }
 
     // Public methods (used by the controller)
-    public List<PlayerResponse> getPlayers(String usernameSearch) {
-        List<Player> players = findPlayers(usernameSearch);
-        return toResponses(players);
+    public PlayerPageResponse getPlayerPage(String usernameSearch, int page) {
+        String text = cleanSearch(usernameSearch);
+        int totalMatches = playerRepository.countByUsernameContaining(text);
+        int totalPages = Math.min((totalMatches + PAGE_SIZE - 1) / PAGE_SIZE, MAX_PAGES);
+        int safePage = Math.max(0, Math.min(page, totalPages - 1));
+        int offset = safePage * PAGE_SIZE;
+
+        List<Player> players = playerRepository.findPage(text, PAGE_SIZE, offset);
+        return new PlayerPageResponse(toResponses(players), safePage, totalPages);
     }
 
     public PlayerResponse getPlayerById(int id) {
@@ -36,14 +47,11 @@ public class PlayerService {
     }
 
     // Private helpers
-    private List<Player> findPlayers(String usernameSearch) {
+    private String cleanSearch(String usernameSearch) {
         if (usernameSearch == null) {
-            return playerRepository.findAll();
+            return "";
         }
-        if (usernameSearch.isBlank()) {
-            return playerRepository.findAll();
-        }
-        return playerRepository.findByUsernameContaining(usernameSearch);
+        return usernameSearch.trim();
     }
 
     private List<PlayerResponse> toResponses(List<Player> players) {

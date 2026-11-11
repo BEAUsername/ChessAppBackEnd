@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.chess.controller.dtoResponse.PlayerPageResponse;
 
 @RestController
 @RequestMapping("/api/players")
@@ -26,8 +25,10 @@ class PlayerController {
 
     // GET /api/players  or  GET /api/players?username=queen
     @GetMapping
-    public List<PlayerResponse> getPlayers(@RequestParam(name = "username", required = false) String username) {
-        return playerService.getPlayers(username);
+    public PlayerPageResponse getPlayers(
+            @RequestParam(name = "username", required = false) String username,
+            @RequestParam(name = "page", defaultValue = "0") int page) {
+        return playerService.getPlayerPage(username, page);
     }
 
     // GET /api/players/{id}
