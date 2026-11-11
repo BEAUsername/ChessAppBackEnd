@@ -1,4 +1,4 @@
-package org.chess.service;
+package org.chess.interfaces;
 
 import org.chess.model.Player;
 
@@ -13,4 +13,8 @@ public interface PlayerRepository {
     Optional<Player> findById(int id);
 
     List<Player> findByUsernameContaining(String text);
+
+    List<Player> findPage(String text, int limit, int offset);
+
+    int countByUsernameContaining(String text);
 }
