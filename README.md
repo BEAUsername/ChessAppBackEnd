@@ -1,30 +1,21 @@
 # ChessBackEnd
 
-Chess API built with Spring Boot.
+Chess API built with Spring Boot (Java 25), using a MySQL database.
 
-## Run the app (Docker only)
+## Run the whole app
 
-```
-docker run -p 8080:8080 ghcr.io/beausername/chessapp-backend:latest
-```
+The back end, front end and database are started together from a different repository with Docker Compose.
+The Docker image of the BE can be found here: 
 
-Then open http://localhost:8080/api/players
+ghcr.io/beausername/chessapp-backend:latest
 
 ## Develop
 
-Requirements: Java 25 and Docker.
+Requirements: Java 25 and a MySQL database.
 
-1. Build the jar:
-```
-   ./gradlew bootJar
-```
-2. Build the Docker image:
-```
-   docker build -t chessapp-backend-image .
-```
-3. Run it:
-```
-   docker run -p 8080:8080 chessapp-backend-image
-```
-
-r
+1. Set these environment variables (for example in the IntelliJ run configuration):
+    - `SPRING_DATASOURCE_URL`, for example `jdbc:mysql://localhost:3306/chessapp`
+    - `SPRING_DATASOURCE_USERNAME`
+    - `SPRING_DATASOURCE_PASSWORD`
+2. Start `ChessBackEndApplication`. Flyway creates the tables on the first start.
+3. Open http://localhost:8080/api/players
