@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,6 +66,26 @@ class JdbcPlayerRepository implements PlayerRepository {
                 .param("text", "%" + text + "%")
                 .query(Integer.class)
                 .single();
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        int count = jdbcClient.sql("SELECT COUNT(*) FROM players WHERE username = :username")
+                .param("username", username)
+                .query(Integer.class)
+                .single();
+        return count > 0;
+    }
+
+    @Override
+    public void insert(String username, LocalDate creationDate, String passwordHash, LocalDate birthDate) {
+        jdbcClient.sql("INSERT INTO players (username, creation_date, password_hash, birth_date) "
+                        + "VALUES (:username, :creationDate, :passwordHash, :birthDate)")
+                .param("username", username)
+                .param("creationDate", creationDate)
+                .param("passwordHash", passwordHash)
+                .param("birthDate", birthDate)
+                .update();
     }
 
     // Private helper: turns one database row into a Player
