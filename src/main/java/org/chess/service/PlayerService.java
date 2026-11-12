@@ -26,7 +26,7 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
-    // Public methods (used by the controller)
+    // Public methods
     public PlayerPageResponse getPlayerPage(String usernameSearch, int page) {
         String text = cleanSearch(usernameSearch);
         int totalMatches = playerRepository.countByUsernameContaining(text);

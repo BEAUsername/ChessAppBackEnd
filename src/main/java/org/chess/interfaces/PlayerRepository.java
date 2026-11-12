@@ -2,10 +2,10 @@ package org.chess.interfaces;
 
 import org.chess.model.Player;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-// Interface: what the service needs from any kind of player storage
 public interface PlayerRepository {
 
     List<Player> findAll();
@@ -17,4 +17,8 @@ public interface PlayerRepository {
     List<Player> findPage(String text, int limit, int offset);
 
     int countByUsernameContaining(String text);
+
+    boolean existsByUsername(String username);
+
+    void insert(String username, LocalDate creationDate, String passwordHash, LocalDate birthDate);
 }

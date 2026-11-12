@@ -1,4 +1,0 @@
-services:
-   backend:
-     image: ghcr.io/beausername/chessapp-backend:latest
-

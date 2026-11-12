@@ -16,14 +16,12 @@ class PlayerController {
     // Fields
     private final PlayerService playerService;
 
-    // Constructor: Spring injects a PlayerService here
+    // Constructor: Spring injects
     PlayerController(PlayerService playerService) {
         this.playerService = playerService;
     }
 
-    // Endpoints
 
-    // GET /api/players  or  GET /api/players?username=queen
     @GetMapping
     public PlayerPageResponse getPlayers(
             @RequestParam(name = "username", required = false) String username,
@@ -31,7 +29,6 @@ class PlayerController {
         return playerService.getPlayerPage(username, page);
     }
 
-    // GET /api/players/{id}
     @GetMapping("/{id}")
     public PlayerResponse getPlayerById(@PathVariable("id") int id) {
         return playerService.getPlayerById(id);

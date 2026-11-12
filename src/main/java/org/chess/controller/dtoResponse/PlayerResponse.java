@@ -15,7 +15,6 @@ public record PlayerResponse(
         int winPercentage
 ) {
 
-    // Factory method: to convert.
     public static PlayerResponse fromPlayer(Player player) {
         return new PlayerResponse(
                 player.getId(),
