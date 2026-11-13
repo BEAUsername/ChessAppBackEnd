@@ -46,6 +46,14 @@ public class PlayerService {
         return PlayerResponse.fromPlayer(player.get());
     }
 
+    public PlayerResponse getPlayerByUsername(String username) {
+        Optional<Player> player = playerRepository.findByUsername(username);
+        if (player.isEmpty()) {
+            throw new PlayerNotFoundException(username);
+        }
+        return PlayerResponse.fromPlayer(player.get());
+    }
+
     // Private helpers
     private String cleanSearch(String usernameSearch) {
         if (usernameSearch == null) {

@@ -1,6 +1,7 @@
 package org.chess.controller;
 
 import org.chess.controller.dtoResponse.ApiError;
+import org.chess.exception.InvalidLoginException;
 import org.chess.exception.PlayerNotFoundException;
 import org.chess.exception.UsernameTakenException;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,13 @@ class GlobalExceptionHandler {
         return new ApiError(HttpStatus.CONFLICT.value(), exception.getMessage());
     }
 
+    // Wrong username or password -> 401 Unauthorized
+    @ExceptionHandler(InvalidLoginException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ApiError handleInvalidLogin(InvalidLoginException exception) {
+        return new ApiError(HttpStatus.UNAUTHORIZED.value(), exception.getMessage());
+    }
+
     // Unknown URL, for example /api/unknown -> 404 Not Found
     @ExceptionHandler(NoResourceFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -42,7 +50,7 @@ class GlobalExceptionHandler {
                 "'" + exception.getValue() + "' is not a valid value for " + exception.getName());
     }
 
-    // Invalid data, for example a username that breaks the Player rules -> 400 Bad Request
+    // Invalid data, for example a username that breaks the rules -> 400 Bad Request
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleInvalidData(IllegalArgumentException exception) {

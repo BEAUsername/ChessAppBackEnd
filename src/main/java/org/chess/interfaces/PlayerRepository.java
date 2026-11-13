@@ -1,16 +1,22 @@
 package org.chess.interfaces;
 
+import org.chess.model.Credentials;
 import org.chess.model.Player;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+// Interface: what the services need from any kind of player storage
 public interface PlayerRepository {
 
     List<Player> findAll();
 
     Optional<Player> findById(int id);
+
+    Optional<Player> findByUsername(String username);
+
+    Optional<Credentials> findCredentialsByUsername(String username);
 
     List<Player> findByUsernameContaining(String text);
 

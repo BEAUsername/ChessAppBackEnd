@@ -1,8 +1,11 @@
 package org.chess.service;
 
 import org.chess.controller.dtoRequests.JoinRequest;
+import org.chess.controller.dtoRequests.LoginRequest;
+import org.chess.exception.InvalidLoginException;
 import org.chess.exception.UsernameTakenException;
 import org.chess.interfaces.PlayerRepository;
+import org.chess.model.Credentials;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +41,23 @@ public class AuthService {
 
         String passwordHash = passwordEncoder.encode(request.password());
         playerRepository.insert(request.username(), LocalDate.now(), passwordHash, request.birthDate());
+    }
+
+    // Checks username and password; returns the username as stored in the database
+    public String login(LoginRequest request) {
+        if (request.username() == null || request.password() == null) {
+            throw new InvalidLoginException();
+        }
+
+        Credentials credentials = playerRepository.findCredentialsByUsername(request.username())
+                .orElseThrow(InvalidLoginException::new);
+
+        if (credentials.passwordHash() == null
+                || !passwordEncoder.matches(request.password(), credentials.passwordHash())) {
+            throw new InvalidLoginException();
+        }
+
+        return credentials.username();
     }
 
     // Validation

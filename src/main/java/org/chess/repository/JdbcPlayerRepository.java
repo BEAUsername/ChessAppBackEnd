@@ -1,5 +1,6 @@
 package org.chess.repository;
 
+import org.chess.model.Credentials;
 import org.chess.model.Player;
 import org.chess.interfaces.PlayerRepository;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -38,6 +39,24 @@ class JdbcPlayerRepository implements PlayerRepository {
         return jdbcClient.sql(SELECT_PLAYERS + " WHERE id = :id")
                 .param("id", id)
                 .query(this::toPlayer)
+                .optional();
+    }
+
+    @Override
+    public Optional<Player> findByUsername(String username) {
+        return jdbcClient.sql(SELECT_PLAYERS + " WHERE username = :username")
+                .param("username", username)
+                .query(this::toPlayer)
+                .optional();
+    }
+
+    @Override
+    public Optional<Credentials> findCredentialsByUsername(String username) {
+        return jdbcClient.sql("SELECT username, password_hash FROM players WHERE username = :username")
+                .param("username", username)
+                .query((resultSet, rowNumber) -> new Credentials(
+                        resultSet.getString("username"),
+                        resultSet.getString("password_hash")))
                 .optional();
     }
 

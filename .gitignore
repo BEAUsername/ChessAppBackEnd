@@ -27,3 +27,10 @@ replay_pid*
 # Gradle
 .gradle/
 build/
+
+# IntelliJ
+.idea/
+*.iml
+
+# SonarQube cache
+.sonar/
