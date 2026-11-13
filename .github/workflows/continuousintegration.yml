@@ -25,12 +25,14 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-java-gradle
-      - run: ./gradlew test
+      - run: ./gradlew test jacocoTestReport
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: CI-test-reports
-          path: build/reports/tests/
+          path: |
+            build/reports/tests/
+            build/reports/jacoco/
 
   docker:
     runs-on: ubuntu-latest
