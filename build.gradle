@@ -32,6 +32,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-resource-server'
 }
 
+// JaCoCo: measures which lines the unit tests run (0.8.14+ is needed for Java 25)
 jacoco {
     toolVersion = '0.8.15'
 }
@@ -44,16 +45,19 @@ tasks.named('test') {
 tasks.named('jacocoTestReport') {
     dependsOn tasks.named('test')
     reports {
-        xml.required = true
-        html.required = true
+        xml.required = true   // read by SonarQube
+        html.required = true  // for you to open in a browser
     }
 }
 
+// SonarQube: static code analysis + shows the JaCoCo coverage
 sonar {
     properties {
         property 'sonar.projectKey', 'ChessBackEnd'
         property 'sonar.projectName', 'ChessBackEnd'
         property 'sonar.host.url', 'http://localhost:9000'
         property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/test/jacocoTestReport.xml'
+        property 'sonar.coverage.exclusions',
+                '**/ChessBackEndApplication.java, **/config/**, **/dtoRequests/**, **/dtoResponse/**'
     }
 }
